@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+
+        table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #8B008B;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Payment History</h1>
+    <table id="paymentHistoryTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Application No.</th>
+                <th>Date</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Payment records will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        async function loadPaymentHistory() {
+            try {
+                const response = await fetch('/api/payment-history');
+                if (!response.ok) {
+                    throw new Error("Failed to load payment history.");
+                }
+
+                const payments = await response.json();
+                const tableBody = document.getElementById("paymentHistoryTable").getElementsByTagName("tbody")[0];
+
+                payments.forEach(payment => {
+                    const row = document.createElement("tr");
+
+                    const nameCell = document.createElement("td");
+                    nameCell.textContent = payment.name;
+                    row.appendChild(nameCell);
+
+                    const appNoCell = document.createElement("td");
+                    appNoCell.textContent = payment.app_no;
+                    row.appendChild(appNoCell);
+
+                    const dateCell = document.createElement("td");
+                    dateCell.textContent = new Date(payment.date).toLocaleDateString();
+                    row.appendChild(dateCell);
+
+                    const amountCell = document.createElement("td");
+                    amountCell.textContent = `₹${payment.amount}`;
+                    row.appendChild(amountCell);
+
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error loading payment history:', error);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadPaymentHistory);
+    </script>
+</body>
+
+</html>

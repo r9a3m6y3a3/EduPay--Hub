@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom right, #6a11cb, #2575fc); /* Gradient background */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    color: #333;
+}
+
+.container {
+    background-color: #fff; /* White background for container */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Shadow for better visual */
+    text-align: center;
+    width: 400px; /* Fixed width to control the layout */
+}
+
+.logo img {
+    width: 100px; /* Logo width */
+    margin-bottom: 15px;
+    text-align: center;
+
+}
+
+h1 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+form label {
+    display: block;
+    text-align: left;
+    margin: 10px 0 5px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+form input[type="text"],
+form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #007bff; /* Blue color for the button */
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.register-button {
+    margin-top: 10px; /* Added space between Login and Register button */
+    background-color: #28a745; /* Different color for register button for distinction */
+}

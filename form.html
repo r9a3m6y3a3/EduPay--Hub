@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #6a11cb, #2575fc);
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 5% auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color:  #333;
+            margin-bottom: 5px;
+            font-size: 20px;
+        }
+        h2 {
+            color:  #555;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        label {
+            margin: 10px 0 5px 0;
+            font-weight: bold;
+            width: 100%;
+            text-align: left;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+        }
+        button {
+            padding: 10px;
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .success-message {
+            display: none;
+        }
+        .back-button {
+            padding: 10px;
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="logoimage.jpg" alt="Vivekanandha College of Engineering for Women">
+            <h1>Vivekanandha College of Engineering for Women</h1>
+            <h2>Student Registration</h2>
+        </div>
+        <form action="/register" method="post"> 
+            <label for="name">Name :</label>
+            <input type="text" id="name" name="name" required>
+            <label for="app_no">Application No :</label>
+            <input type="text" id="app_no" name="app_no" required>
+            <label for="email">Email :</label>
+            <input type="email" id="email" name="email" required>
+            <label for="department">Department :</label>
+            <select name="department" id="department" required>
+                <option value="CSE">CSE</option>
+                <option value="IT">IT</option>
+                <option value="CST">CST</option>
+                <option value="EEE">EEE</option>
+                <option value="ECE">ECE</option>
+                <option value="BME">BME</option>
+                <option value="BT">BT</option>
+            </select>
+            <label for="batch">Batch :</label>
+            <select name="batch" id="batch" required>
+                <option value="2021-2025">2021-2025</option>
+                <option value="2022-2026">2022-2026</option>
+                <option value="2023-2027">2023-2027</option>
+                <option value="2024-2028">2024-2028</option>
+            </select>
+            <label for="graduate">Graduate :</label>
+            <select name="graduate" id="graduate" required>
+                <option value="FG">FG</option>
+                <option value="NFG">NFG</option>
+            </select>
+            <label for="quota">Quota :</label>
+            <select name="quota" id="quota" required>
+                <option value="GQ">GQ</option>
+                <option value="MQ">MQ</option>
+            </select>
+            <label for="accommodation">Accommodation :</label>
+            <select name="accommodation" id="accommodation" required>
+                <option value="DayScholar">DayScholar</option>
+                <option value="Hostel">Hostel</option>
+            </select>
+            <label for="hostelname">Hostel Name :</label>
+            <select name="hostelname" id="hostelname" required>
+                <option value="Siruvani">Siruvani</option>
+                <option value="Bhavani">Bhavani</option>
+                <option value="Amaravathi">Amaravathi</option>
+                <option value="None">None</option>
+            </select>
+            <label for="hosteltype">Hostel Type :</label>
+            <select name="hosteltype" id="hosteltype" required>
+                <option value="Special">Special</option>
+                <option value="Deluxe">Deluxe</option>
+                <option value="None">None</option>
+            </select>
+            <label for="scholarship">Scholarship :</label>
+            <select name="scholarship" id="scholarship" required>
+                <option value="7.5 Reservation">7.5 Reservation</option>
+                <option value="PMSS">PMSS</option>
+                <option value="Cut off concession">Cut off concession</option>
+                <option value="Arivu Thiran Exam">Arivu Thiran Exam</option>
+                <option value="None">None</option>
+            </select>
+            <label for="password">Password :</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Register</button>
+        </form>
+        <div class="success-message" id="successMessage">
+            <h2>Registration successfully completed!</h2>
+            <button class="back-button" id="backButton">Back to Login</button>
+        </div>
+    </div>
+    <script>
+        document.getElementById("registrationForm").addEventListener("submit", function(event) {
+            event.preventDefault();// Prevent the default form submission
+            
+            // Hide the form and display the success message
+            document.getElementById("registrationForm").style.display = "none";
+            document.getElementById("successMessage").style.display = "block";
+        });
+
+        document.getElementById("backButton").addEventListener("click", function() {
+            window.location.href = "login.html"; // Redirect to the login page
+        });
+    </script>
+</body>
+</html>

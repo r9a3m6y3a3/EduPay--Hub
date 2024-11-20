@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivekanandha College Header</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .top-bar {
+            width: 100%;
+            height: 5px;
+            background-color: #8B008B;
+        }
+
+        .header {
+            background-color: #FFFFFF;
+            padding: 10px 20px;
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo img {
+            width: 80px;
+            height: auto;
+        }
+
+        .college-name {
+            margin-left: 20px;
+            text-align: center;
+        }
+
+        .college-name h1 {
+            margin: 0;
+            color: #8B008B;
+        }
+
+        .college-name h2 {
+            margin: 0;
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            margin-top: 5px;
+            color: #333;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .hamburger-menu {
+            cursor: pointer;
+            z-index: 1000;
+            position: absolute;
+            left: 200px;
+        }
+
+        .hamburger-menu div {
+            width: 30px;
+            height: 4px;
+            background-color: #008000;
+            margin: 6px 0;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            left: 250px;
+            background: #FFFFFF;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            z-index: 999;
+            padding: 10px 0;
+            text-align: left;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 10px 20px;
+            color: #008000;
+            text-decoration: none;
+        }
+
+        .dropdown a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .main-image {
+            margin: 20px auto;
+            max-width: 100%;
+            display: block;
+        }
+
+        #contactDetailsPage {
+            display: none;
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .content {
+            width: 100%;
+            background: linear-gradient(to bottom right, #6a11cb, #2575fc);
+            padding: 20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-bar"></div>
+    <header class="header">
+        <div class="hamburger-menu" id="hamburgerMenu">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <div class="header-content">
+            <div class="logo">
+                <img src="logoimage.jpg" alt="Vivekanandha College of Engineering For Women">
+            </div>
+            <div class="college-name">
+                <h1>VIVEKANANDHA</h1>
+                <h2>COLLEGE OF ENGINEERING FOR WOMEN</h2>
+                <div class="subtitle">(Autonomous)</div>
+            </div>
+        </div>
+
+        <div class="dropdown" id="dropdownMenu">
+            <a href="/profile-management">Profile Management</a>
+            <a href="/feeDetails">Fee Payment</a>
+            <a href="payment2.html">Payment History</a>
+            
+            <a id="logoutButton" href="#">Logout</a> <!-- Logout button with an ID -->
+        </div>
+    </header>
+
+    <div id="contactDetailsPage">
+        <h2>Contact Details</h2>
+        <p>
+            The Principal,<br>
+            Vivekanandha College of Engineering for Women (Autonomous),<br>
+            Elayampalayam, Tiruchengode - TK,<br>
+            Namakkal District,<br>
+            Tamilnadu - 637 205, INDIA.<br>
+            M: +91 9443734562<br>
+            E: principal@vcew.ac.in
+        </p>
+        <button id="closeContactDetails">Close</button>
+    </div>
+
+    <div class="content">
+        <img src="collegeback.jpg" class="main-image" width="1200px" height="400px">
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Hamburger menu functionality
+            const hamburgerMenu = document.getElementById('hamburgerMenu');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+
+            hamburgerMenu.addEventListener('click', function () {
+                dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+            });
+
+            window.addEventListener('click', function (e) {
+                if (!hamburgerMenu.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                    dropdownMenu.style.display = 'none';
+                }
+            });
+
+            // Logout button functionality
+            const logoutButton = document.getElementById('logoutButton');
+
+            logoutButton.addEventListener('click', function (e) {
+                e.preventDefault(); // Prevent default link behavior
+                fetch('/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(data => {
+                            alert(data.message); // Show message from server
+                            window.location.href = '/login'; // Redirect to login page
+                        });
+                    } else {
+                        alert("Logout failed. Try again.");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+           // Download Receipt functionality
+           document.getElementById('downloadReceiptButton').addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Example data (replace with actual data from your application)
+                const studentName = "John Doe";
+                const studentBatch = "2024";
+                const studentDepartment = "CSE";
+                const studentTerm = "Term 1";
+                const studentAmount = "10000";
+                const totalAmount = "10000";
+
+                // Create a new window for the receipt
+                const receiptWindow = window.open('', '_blank');
+
+                // Create the receipt content
+                const receiptContent = `
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Receipt</title>
+ <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                padding: 20px;
+                                text-align: center;
+                            }
+                            .receipt {
+                                border: 1px solid #8B008B;
+                                padding: 20px;
+                                margin: auto;
+                                width: 50%;
+                                border-radius: 10px;
+                            }
+                            .logo {
+                                margin-bottom: 20px;
+                            }
+                            h1, h2 {
+                                margin: 0;
+                            }
+ .details {
+                                margin: 20px 0;
+                            }
+                            .total {
+                                font-weight: bold;
+                                font-size: 18px;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="receipt">
+                            <div class="logo">
+                                <img src="logo.png" alt="Vivekanandha College Logo" width="80">
+                            </div>
+                            <h1>VIVEKANANDHA COLLEGE OF ENGINEERING FOR WOMEN</h1>
+                            <h2>(Autonomous)</h2>
+                            <div class="details">
+                                <p><strong>Name:</strong> ${studentName}</p>
+                                <p><strong>Batch:</strong> ${studentBatch}</p>
+                                <p><strong>Department:</strong> ${studentDepartment}</p>
+                                <p><strong>Term:</strong> ${studentTerm}</p>
+                                <p><strong>Amount:</strong> ₹${studentAmount}</p>
+                                <p class="total">Total Amount: ₹${totalAmount}</p>
+                            </div>
+                        </div>
+</body>
+                    </html>
+                `;
+
+                // Write the content to the new window
+                receiptWindow.document.write(receiptContent);
+                receiptWindow.document.close();
+                receiptWindow.focus();
+
+                // Wait for the window to be ready, then print the receipt
+                receiptWindow.onload = function () {
+                    receiptWindow.print();
+                    receiptWindow.close();
+                };
+            });
+
+// Contact details show/hide functionality
+const showContactDetails = document.getElementById('showContactDetails');
+            const contactDetailsPage = document.getElementById('contactDetailsPage');
+            const closeContactDetails = document.getElementById('closeContactDetails');
+            const header = document.querySelector('.header');
+
+            if (showContactDetails) {
+                showContactDetails.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    header.style.display = 'none';
+                    contactDetailsPage.style.display = 'block';
+                });
+            }
+
+            closeContactDetails.addEventListener('click', function () {
+                contactDetailsPage.style.display = 'none';
+                header.style.display = 'block';
+            });
+        });
+
+    </script>
+</body>
+
+</html>
+
+
+            
+            
+
+    </script>
+</body>
+
+</html>

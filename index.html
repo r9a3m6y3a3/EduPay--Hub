@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom right, #6a11cb, #2575fc);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      color: #333;
+    }
+
+    .login-form {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 400px;
+    }
+
+    .login-form h2 {
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .login-form label {
+      display: block;
+      text-align: left;
+      margin: 10px 0 5px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .login-form input[type="submit"] {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .login-form input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    .logo img {
+      width: 100px;
+      margin-bottom: 15px;
+    }
+
+    .college-name {
+      margin-bottom: 20px;
+    }
+
+    .college-name h1 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .college-name h2 {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 14px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .loading {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .loading::after {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid #007bff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 480px) {
+      .login-form {
+        width: 90%;
+        padding: 20px;
+      }
+
+      .college-name h1 {
+        font-size: 20px;
+      }
+
+      .college-name h2 {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-form">
+    <div class="logo">
+      <img src="logoimage.jpg" alt="Logo">
+    </div>
+    <div class="college-name">
+      <h1>Vivekanandha College</h1>
+      <h2>of Engineering for Women</h2>
+    </div>
+    <h2>ADMIN LOGIN!!!</h2>
+    <form id="loginForm">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+      
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      
+      <input type="submit" value="Login">
+    </form>
+    <div id="errorMessage" class="error-message"></div>
+    <div id="loading" class="loading"></div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginForm = document.getElementById('loginForm');
+      const errorMessage = document.getElementById('errorMessage');
+      const loading = document.getElementById('loading');
+  
+      loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+  
+        errorMessage.style.display = 'none';
+        loading.style.display = 'block';
+  
+        fetch('/admin/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, password }),
+          credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.message === 'Admin login successful') {
+            window.location.href = data.redirectTo; // Redirect based on server response
+          } else {
+            throw new Error(data.message || 'Login failed');
+          }
+        })
+        .catch(error => {
+          errorMessage.textContent = error.message;
+          errorMessage.style.display = 'block';
+        })
+        .finally(() => {
+          loading.style.display = 'none';
+        });
+      });
+  
+      document.getElementById('username').addEventListener('input', clearError);
+      document.getElementById('password').addEventListener('input', clearError);
+  
+      function clearError() {
+        errorMessage.style.display = 'none';
+      }
+    });
+  </script>
+  
+  
+</body>
+</html>

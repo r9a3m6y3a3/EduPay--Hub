@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Fee Payment Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="logoimage.jpg" alt="Vivekanandha College of Engineering for Women">
+        </div>
+        <h1>Vivekanandha College of Engineering for Women (Autonomous)</h1>
+        <h2>EduPay Hub</h2>
+        <form action="/login" method="post">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" required>
+ 
+            
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit">Login</button>
+            <button type="button" class="register-button" id="registerButton">Register</button> <!-- Register button -->
+        </form>
+    </div>
+    <script>
+        document.getElementById("registerButton").addEventListener("click", function() {
+            window.location.href = "form.html"; // Redirects to the registration page
+        });
+    </script>
+
+</body>
+</html>

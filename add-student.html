@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Add Student</h1>
+        <form id="addStudentForm"><div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" name="name" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Application Number</label>
+                <input type="text" class="form-control" name="app_no" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Department</label>
+                <select class="form-select" name="department" required>
+                    <option value="">Select Department</option>
+                    <option value="CSE">Computer Science</option>
+                    <option value="ECE">Electronics</option>
+                    <option value="MECH">Mechanical</option>
+                    <!-- Add more departments as needed -->
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Batch</label>
+                <input type="text" class="form-control" name="batch" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Graduate</label>
+                <select class="form-select" name="graduate" required>
+                    <option value="">Select Graduate Type</option>
+                    <option value="FG">First Graduate</option>
+                    <option value="NFG">Not First Graduate</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Quota</label>
+                <select class="form-select" name="quota" required>
+                    <option value="">Select Quota</option>
+                    <option value="GQ">Government Quota</option>
+                    <option value="MQ">Management Quota</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Accommodation</label>
+                <select class="form-select" name="accommodation" required>
+                    <option value="">Select Accommodation</option>
+                    <option value="Hostel">Hostel</option>
+                    <option value="Day Scholar">Day Scholar</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Scholarship</label>
+                <select class="form-select" name="scholarship" required>
+                    <option value="">Select Scholarship</option>
+                    <option value="None">None</option>
+                    <option value="PMSS">PMSS</option>
+                    <option value="7.5 Reservation">7.5 Reservation</option>
+                    <option value="Cut off concession">Cut off concession</option>
+                </select>
+            </div>
+        </div>
+        
+            <!-- Existing form fields remain unchanged -->
+
+            <button type="submit" class="btn btn-primary">Add Student</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('addStudentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const studentData = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('http://localhost:3000/api/admin/add-student', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(studentData),
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert(`Student added successfully. Temporary password: ${result.temporaryPassword}`);
+                    e.target.reset(); // Reset the form after successful submission
+                } else {
+                    alert('Error adding student');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error adding student');
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Payment</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #6a11cb, #2575fc);
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 5% auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1, h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+            width: 100%;
+            text-align: left;
+        }
+        input[type="text"], select {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+        }
+        button {
+            padding: 10px;
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fee Payment Form</h1>
+        <form id="payment-form">
+            <label for="name">Name :</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="app_no">Application No :</label>
+            <input type="text" id="app_no" name="app_no" required>
+            
+            <label for="department">Department :</label>
+            <select name="department" id="department" required>
+                <option value="CSE">CSE</option>
+                <option value="IT">IT</option>
+                <option value="CST">CST</option>
+                <option value="EEE">EEE</option>
+                <option value="ECE">ECE</option>
+                <option value="BME">BME</option>
+                <option value="BT">BT</option>
+            </select>
+            
+            <label for="batch">Batch :</label>
+            <select name="batch" id="batch" required>
+                <option value="2021-2025">2021-2025</option>
+                <option value="2022-2026">2022-2026</option>
+                <option value="2023-2027">2023-2027</option>
+                <option value="2024-2028">2024-2028</option>
+            </select>
+            
+            <label for="term">Term :</label>
+            <select name="term" id="term" required>
+                <option value="I">I</option>
+                <option value="II">II</option>
+                <option value="III">III</option>
+            </select>
+            
+            <label for="tuition-fees">Tuition Fees :</label>
+            <input type="text" id="tuition-fees" name="tuition_fees" required>
+            
+            <label for="record-fees">Record & Other Fees :</label>
+            <input type="text" id="record-fees" name="record_fees" required>
+            
+            <label for="pay-amount">Enter Total Amount:</label>
+            <input type="text" id="pay-amount" name="pay_amount" readonly required>
+
+            <button type="button" id="pay-fees">Pay Fees</button>
+        </form>
+    </div>
+    <script src="https://js.stripe.com/v3/"></script>
+
+
+    <script>
+        function calculateTotal() {
+            // Get the values of tuition and record fees
+            const tuitionFees = parseFloat(document.getElementById('tuition-fees').value) || 0;
+            const recordFees = parseFloat(document.getElementById('record-fees').value) || 0;
+            
+            // Calculate the total fees
+            const totalAmount = tuitionFees + recordFees;
+            
+            // Display the total in the total amount field
+            document.getElementById('pay-amount').value = totalAmount.toFixed(2);
+        }
+
+        // Add event listeners to calculate total when tuition or record fees are entered
+        document.getElementById('tuition-fees').addEventListener('input', calculateTotal);
+        document.getElementById('record-fees').addEventListener('input', calculateTotal);
+
+        document.getElementById('pay-fees').addEventListener('click', async function(e) {
+    e.preventDefault(); // Prevent default form submission
+
+    const amount = parseFloat(document.getElementById('pay-amount').value);
+    if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid amount.");
+        return;
+    }
+
+    const tuitionFees = document.getElementById('tuition-fees').value;
+    const recordFees = document.getElementById('record-fees').value;
+    const term = document.getElementById('term').value;
+
+    // Call your backend to create a checkout session with metadata
+    const response = await fetch('/create-checkout-session', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            amount: amount * 100, // Amount in cents
+            metadata: {
+                tuition_fee: tuitionFees,
+                record_fee: recordFees,
+                term: term
+            }
+        })
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.error}`);
+        return;
+    }
+
+    const { id: sessionId } = await response.json();
+    const stripe = Stripe("pk_test_51Q5rOjBNU1hIYlxRKmpa8noqUXkyqEvJIzY8fYRGx1NOjBowgDOSv2kRuKxEtaGHNbBEbRJeR78OZyJNas7XtKMD00JqtLRq4g");
+    const result = await stripe.redirectToCheckout({ sessionId });
+
+    if (result.error) {
+        alert(result.error.message);
+    }
+});
+
+
+</script>
+</body>
+</html>
